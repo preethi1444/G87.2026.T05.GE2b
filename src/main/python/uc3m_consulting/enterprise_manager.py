@@ -3,7 +3,6 @@ import os
 from .enterprise_project import EnterpriseProject
 from .enterprise_management_exception import EnterpriseManagementException
 
-
 class EnterpriseManager:
     def register_document(self, file_path):
         if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
@@ -13,7 +12,9 @@ class EnterpriseManager:
             def dict_check(pairs):
                 res = {}
                 for k, v in pairs:
-                    if k in res: raise ValueError("Duplicate")
+                    if k in res:
+                        # This triggers the "no valid values" message via ValueError
+                        raise ValueError("Duplicate")
                     res[k] = v
                 return res
 
@@ -34,6 +35,11 @@ class EnterpriseManager:
 
         if not isinstance(data, dict) or "PROJECT_ID" not in data or "FILENAME" not in data:
             raise EnterpriseManagementException("JSON does not have expected structure")
+
+        project_id = data.get("PROJECT_ID")
+
+        if not isinstance(project_id, str) or len(project_id) != 32:
+            raise EnterpriseManagementException("JSON data has no valid values")
 
         project = EnterpriseProject(
             company_cif=data["PROJECT_ID"],

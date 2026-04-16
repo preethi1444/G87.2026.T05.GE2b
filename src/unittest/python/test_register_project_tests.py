@@ -51,5 +51,18 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(EnterpriseManagementException):
             manager.register_document(test_file)
 
+    def test_tc_sa_05_open_brace_deleted(self):
+        """tc_sa_05: Missing opening brace should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_05.json")
+
+        expected_msg = "The file is not JSON formatted"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

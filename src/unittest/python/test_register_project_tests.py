@@ -312,5 +312,45 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(expected_msg, str(context.exception))
 
+    def test_tc_sa_25_colon_pid_modified(self):
+        """tc_sa_25: Equals sign instead of colon should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_25.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("The file is not JSON formatted", str(context.exception))
+
+    def test_tc_sa_26_value_pid_deleted(self):
+        """tc_sa_26: Empty PROJECT_ID string should trigger 'JSON data has no valid values'"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_26.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("JSON data has no valid values", str(context.exception))
+
+    def test_tc_sa_27_value_pid_duplicated(self):
+        """tc_sa_27: 64-char PROJECT_ID (invalid length) should trigger 'JSON data has no valid values'"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_27.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("JSON data has no valid values", str(context.exception))
+
+    def test_tc_sa_28_label_fn_deleted(self):
+        """tc_sa_28: Missing FILENAME key should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_28.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("The file is not JSON formatted", str(context.exception))
+
+    def test_tc_sa_29_label_fn_duplicated(self):
+        """tc_sa_29: Repeated FILENAME key should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_29.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("The file is not JSON formatted", str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

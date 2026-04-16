@@ -129,5 +129,18 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(expected_msg, str(context.exception))
 
+    def test_tc_sa_11_data_deleted(self):
+        """tc_sa_11: Empty JSON object should trigger 'JSON does not have expected structure'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_11.json")
+
+        expected_msg = "JSON does not have expected structure"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

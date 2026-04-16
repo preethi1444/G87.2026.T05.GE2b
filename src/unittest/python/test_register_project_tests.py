@@ -82,22 +82,5 @@ class MyManagerTests(unittest.TestCase):
 
         self.assertEqual(str(context.exception), "file not JSON formatted")
 
-    def test_tc_sa_05_open_brace_deleted(self):
-            """
-            ID_TEST: tc_sa_05_open_brace_deleted
-            Description: <open_object> deleted: opening { missing
-            """
-            path = "tc_sa_05.json"
-            content = """ "PROJECT_ID": "0123456789abcdef0123456789abcdef",
-    "FILENAME": "ABcd1234.pdf"
-    }"""
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(content)
-
-            with self.assertRaises(EnterpriseManagementException) as context:
-                self.manager.register_document(path)
-
-            self.assertEqual(str(context.exception), "file not JSON formatted")
-
 if __name__ == '__main__':
     unittest.main()

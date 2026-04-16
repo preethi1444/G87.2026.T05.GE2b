@@ -10,8 +10,11 @@ class EnterpriseManager:
 
         if not content.strip():
             raise EnterpriseManagementException("JSON data has no valid values")
+        try:
+            data = json.loads(content)
+        except json.JSONDecodeError:
+            raise EnterpriseManagementException("The file is not JSON formatted")
 
-        data = json.loads(content)
         project = EnterpriseProject(
             company_cif=data["PROJECT_ID"],
             project_acronym=data["FILENAME"],

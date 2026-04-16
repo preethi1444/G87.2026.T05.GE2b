@@ -42,5 +42,30 @@ class MyManagerTests(unittest.TestCase):
 
         self.assertEqual(str(context.exception), "file not JSON formatted")
 
+    def test_tc_sa_03_json_duplicated(self):
+            """
+            ID_TEST: tc_sa_03_json_duplicated
+            Description: JSON object duplicated at root
+            """
+            path = "tc_sa_03.json"
+            # Two JSON objects in one file is invalid
+            content = """{
+    "PROJECT_ID": "0123456789abcdef0123456789abcdef",
+    "FILENAME": "ABcd1234.pdf"
+    }
+    {
+    "PROJECT_ID": "0123456789abcdef0123456789abcdef",
+    "FILENAME": "ABcd1234.pdf"
+    }"""
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
+
+            # We expect the lab-mandated exception and message
+            with self.assertRaises(EnterpriseManagementException) as context:
+                self.manager.register_document(path)
+
+            # Checking the message to satisfy the 100% goal
+            self.assertEqual(str(context.exception), "file not JSON formatted")
+
 if __name__ == '__main__':
     unittest.main()

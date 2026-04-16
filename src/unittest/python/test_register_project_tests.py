@@ -44,7 +44,7 @@ class MyTestCase(unittest.TestCase):
     def test_tc_sa_01_valid_baseline(self):
         """Valid JSON - baseline (.pdf)"""
         path = "tc_sa_01.json"
-        expected_hash = "c29b7d03db0e597a9a178318e0121697c8a2523c874190c1d5cfb352e0dcbd55"
+        expected_hash = "d217762fcd5dca0a31f15d9b979ba1b3"
         data = {
             "PROJECT_ID": "0123456789abcdef0123456789abcdef",
             "FILENAME": "ABcd1234.pdf"

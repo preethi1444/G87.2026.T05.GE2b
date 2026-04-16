@@ -64,5 +64,18 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(expected_msg, str(context.exception))
 
+    def test_tc_sa_06_open_brace_duplicated(self):
+        """tc_sa_06: Duplicated opening brace should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_06.json")
+
+        expected_msg = "The file is not JSON formatted"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

@@ -67,5 +67,20 @@ class MyManagerTests(unittest.TestCase):
             # Checking the message to satisfy the 100% goal
             self.assertEqual(str(context.exception), "file not JSON formatted")
 
+    def test_tc_sa_04_json_not_json(self):
+        """
+        ID_TEST: tc_sa_04_json_not_json
+        Description: File content is plain text, not JSON
+        """
+        path = "tc_sa_04.json"
+        content = "this is not json"
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            self.manager.register_document(path)
+
+        self.assertEqual(str(context.exception), "file not JSON formatted")
+
 if __name__ == '__main__':
     unittest.main()

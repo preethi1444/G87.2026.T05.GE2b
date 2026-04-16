@@ -14,9 +14,10 @@ class EnterpriseManager:
                 data = json.load(f)
         except FileNotFoundError:
             raise EnterpriseManagementException("Input file not found")
+        """
         except json.JSONDecodeError:
             raise EnterpriseManagementException("file not JSON formatted")
-
+        """
         project_id = data.get("PROJECT_ID")
         file_name = data.get("FILENAME")
 

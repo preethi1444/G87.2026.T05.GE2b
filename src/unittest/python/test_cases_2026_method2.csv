@@ -1,0 +1,263 @@
+#,NODE,TERMINAL  (T) / NO TERMINAL (NT),TYPE (DUPLICATION / DELETION / MODIFICATION / VALID),ID TEST,DESCRIPTION,FILE PATH,FILE CONTENT,EXPECTED RESULT,OBSERVATIONS
+1,1,NT,VALID,tc_sa_01_valid_baseline,Valid JSON – baseline (.pdf),tc_sa_01.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }","Returns SHA-256 hash: d217762fcd5dca0a31f15d9b979ba1b3
+ (use @freeze_time in test)",Baseline
+
+2,1,NT,DELETION,tc_sa_02_json_empty,Entire JSON content deleted (empty file),tc_sa_02.json,,EnterpriseManagementException: no content detected,Node 1 deleted
+3,1,NT,DUPLICATION,tc_sa_03_json_duplicated,JSON object duplicated at root,tc_sa_03.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }
+ {
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 1 duplicated
+4,1,NT,MODIFICATION,tc_sa_04_json_not_json,"File content is plain text, not JSON",tc_sa_04.json,this is not json,EnterpriseManagementException: file not JSON formatted,Node 1 modified
+5,2,NT,DELETION,tc_sa_05_open_brace_deleted,<open_object> deleted: opening { missing,tc_sa_05.json,"""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 2/5 deleted
+6,2,NT,DUPLICATION,tc_sa_06_open_brace_duplicated,<open_object> duplicated: {{ at start,tc_sa_06.json,"{{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 2/5 duplicated
+7,2,NT,MODIFICATION,tc_sa_07_open_brace_modified,<open_object> modified: [ instead of {,tc_sa_07.json,"[
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 2/5 modified
+8,4,NT,DELETION,tc_sa_08_close_brace_deleted,<end_object> deleted: closing } missing,tc_sa_08.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""",EnterpriseManagementException: file not JSON formatted,Node 4/6 deleted
+9,4,NT,DUPLICATION,tc_sa_09_close_brace_duplicated,<end_object> duplicated: }} at end,tc_sa_09.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }}",EnterpriseManagementException: file not JSON formatted,Node 4/6 duplicated
+10,4,NT,MODIFICATION,tc_sa_10_close_brace_modified,<end_object> modified: ] instead of },tc_sa_10.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ ]",EnterpriseManagementException: file not JSON formatted,Node 4/6 modified
+11,3,NT,DELETION,tc_sa_11_data_deleted,<Data> deleted: only braces remain,tc_sa_11.json,{},EnterpriseManagementException: JSON does not have expected structure,Node 3 deleted
+12,3,NT,DUPLICATION,tc_sa_12_data_duplicated,<Data> duplicated: all fields repeated twice,tc_sa_12.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf"",
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 3 duplicated
+13,7,NT,DELETION,tc_sa_13_field1_deleted,<Field1> deleted: no PROJECT_ID field,tc_sa_13.json,"{
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON does not have expected structure,Node 7 deleted
+14,7,NT,DUPLICATION,tc_sa_14_field1_duplicated,<Field1> duplicated: PROJECT_ID field twice,tc_sa_14.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 7 duplicated
+15,8,NT,DELETION,tc_sa_15_separator_deleted,<separator> deleted: comma between fields missing,tc_sa_15.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef""
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 8/13 deleted
+16,8,NT,DUPLICATION,tc_sa_16_separator_duplicated,"<separator> duplicated: ,, between fields",tc_sa_16.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",,
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 8/13 duplicated
+17,8,NT,MODIFICATION,tc_sa_17_separator_modified,"<separator> modified: ; instead of ,",tc_sa_17.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"";
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 8/13 modified
+18,9,NT,DELETION,tc_sa_18_field2_deleted,<Field2> deleted: no FILENAME field,tc_sa_18.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef""
+ }",EnterpriseManagementException: JSON does not have expected structure,Node 9 deleted
+19,9,NT,DUPLICATION,tc_sa_19_field2_duplicated,<Field2> duplicated: FILENAME field twice,tc_sa_19.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 9 duplicated
+20,10,NT,DELETION,tc_sa_20_label_pid_deleted,<label_PROJECT_ID> deleted: key missing,tc_sa_20.json,"{
+  : ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 10 deleted
+21,10,NT,DUPLICATION,tc_sa_21_label_pid_duplicated,<label_PROJECT_ID> duplicated: key repeated,tc_sa_21.json,"{
+  ""PROJECT_ID""""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 10 duplicated
+22,10,NT,MODIFICATION,tc_sa_22_label_pid_modified,<label_PROJECT_ID> modified: wrong key name,tc_sa_22.json,"{
+  ""PROJ_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON does not have expected structure,Node 10 modified
+23,11,NT,DELETION,tc_sa_23_colon_pid_deleted,<equal>(Field1) deleted: colon after PROJECT_ID missing,tc_sa_23.json,"{
+  ""PROJECT_ID"" ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 11/20 deleted
+24,11,NT,DUPLICATION,tc_sa_24_colon_pid_duplicated,<equal>(Field1) duplicated: :: after PROJECT_ID,tc_sa_24.json,"{
+  ""PROJECT_ID"":: ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 11/20 duplicated
+25,11,NT,MODIFICATION,tc_sa_25_colon_pid_modified,<equal>(Field1) modified: = instead of :,tc_sa_25.json,"{
+  ""PROJECT_ID""= ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 11/20 modified
+26,12,NT,DELETION,tc_sa_26_value_pid_deleted,<value_PROJECT_ID> deleted: value is empty string,tc_sa_26.json,"{
+  ""PROJECT_ID"": """",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 12 deleted
+27,12,NT,DUPLICATION,tc_sa_27_value_pid_duplicated,<value_PROJECT_ID> duplicated: 64-char value,tc_sa_27.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 12 duplicated
+28,14,NT,DELETION,tc_sa_28_label_fn_deleted,<label_FILENAME> deleted: FILENAME key missing,tc_sa_28.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  : ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 14 deleted
+29,14,NT,DUPLICATION,tc_sa_29_label_fn_duplicated,<label_FILENAME> duplicated: key repeated,tc_sa_29.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME""""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 14 duplicated
+30,14,NT,MODIFICATION,tc_sa_30_label_fn_modified,<label_FILENAME> modified: wrong key name,tc_sa_30.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILE_NAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON does not have expected structure,Node 14 modified
+31,15,NT,DELETION,tc_sa_31_colon_fn_deleted,<equal>(Field2) deleted: colon after FILENAME missing,tc_sa_31.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"" ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 15/26 deleted
+32,15,NT,DUPLICATION,tc_sa_32_colon_fn_duplicated,<equal>(Field2) duplicated: :: after FILENAME,tc_sa_32.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"":: ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 15/26 duplicated
+33,15,NT,MODIFICATION,tc_sa_33_colon_fn_modified,<equal>(Field2) modified: = instead of :,tc_sa_33.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME""= ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 15/26 modified
+34,16,NT,DELETION,tc_sa_34_value_fn_deleted,<value_FILENAME> deleted: FILENAME value is empty,tc_sa_34.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": """"
+ }",EnterpriseManagementException: JSON data has no valid values,Node 16 deleted
+35,16,NT,DUPLICATION,tc_sa_35_value_fn_duplicated,<value_FILENAME> duplicated: filename value repeated,tc_sa_35.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdfABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 16 duplicated
+36,18,NT,DELETION,tc_sa_36_string_token_deleted,<STRING_TOKEN> deleted: label quotes missing entirely,tc_sa_36.json,"{
+  PROJECT_ID: ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 18/30 deleted
+37,18,NT,MODIFICATION,tc_sa_37_string_token_modified,<STRING_TOKEN> modified: label is wrong string,tc_sa_37.json,"{
+  ""project_id"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON does not have expected structure,Node 18/30 modified (lowercase)
+38,21,NT,DELETION,tc_sa_38_hex_0_chars,<HEX> deleted: PROJECT_ID value empty (0 chars),tc_sa_38.json,"{
+  ""PROJECT_ID"": """",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 21: 0 iterations
+39,21,NT,DUPLICATION,tc_sa_39_hex_1_char,<HEX> duplicated: 1 char only in PROJECT_ID,tc_sa_39.json,"{
+  ""PROJECT_ID"": ""a"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 21: 1 iteration
+40,31,T,DELETION,tc_sa_40_hex_31_chars,Hex terminal: 31 chars (n-1 boundary),tc_sa_40.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcde"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 31: 31 iters (BVNV)
+41,31,T,VALID,tc_sa_41_hex_32_chars,Hex terminal: 32 chars (valid boundary),tc_sa_41.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }","Returns SHA-256 hash: 2f39a4000fbd5abfc156eaa6022106e2782a9274b07f2ba7e9eaa789ce16dfbd
+ (use @freeze_time in test)",Node 31: 32 iters (BVV)
+42,31,T,DUPLICATION,tc_sa_42_hex_33_chars,Hex terminal: 33 chars (n+1 boundary),tc_sa_42.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdefa"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 31: 33 iters (BVNV)
+43,31,T,MODIFICATION,tc_sa_43_hex_nonhex_char,Hex terminal: non-hex char (g) in value,tc_sa_43.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdeg"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 31: invalid hex char
+44,31,T,MODIFICATION,tc_sa_44_hex_symbol_char,Hex terminal: symbol (@) in PROJECT_ID,tc_sa_44.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcde@"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 31: symbol in hex
+45,24,NT,DELETION,tc_sa_45_fn_token_deleted,<FILENAME_TOKEN> deleted: label quotes missing,tc_sa_45.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  FILENAME: ""ABcd1234.pdf""
+ }",EnterpriseManagementException: file not JSON formatted,Node 24/32 deleted
+46,24,NT,MODIFICATION,tc_sa_46_fn_token_modified,<FILENAME_TOKEN> modified: wrong label string,tc_sa_46.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""filename"": ""ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON does not have expected structure,Node 24/32 modified (lowercase)
+47,28,NT,DELETION,tc_sa_47_fn_value_deleted,<FILENAME_VALUE> deleted: only extension remains,tc_sa_47.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": "".pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 28: NAME part missing
+48,28,NT,DUPLICATION,tc_sa_48_fn_value_duplicated,<FILENAME_VALUE> duplicated: name+ext repeated,tc_sa_48.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdfABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 28 duplicated
+49,33,NT,DELETION,tc_sa_49_name_deleted,"<NAME> deleted: no name, only extension",tc_sa_49.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": "".pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 33 deleted
+50,33,NT,DUPLICATION,tc_sa_50_name_duplicated,<NAME> duplicated: 16-char name,tc_sa_50.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234ABcd1234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 33 duplicated → 16 chars
+51,34,NT,DELETION,tc_sa_51_ext_deleted,<EXTENSION> deleted: no extension in filename,tc_sa_51.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 34 deleted
+52,34,NT,DUPLICATION,tc_sa_52_ext_duplicated,<EXTENSION> duplicated: .pdf.pdf,tc_sa_52.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 34 duplicated
+53,34,NT,MODIFICATION,tc_sa_53_ext_invalid,<EXTENSION> modified: .txt (not allowed),tc_sa_53.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.txt""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 34 modified to .txt
+54,35,NT,DELETION,tc_sa_54_alphanum_0_chars,<ALPHANUMERIC> deleted: empty NAME (0 chars),tc_sa_54.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": "".pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 35: 0 iterations
+55,35,NT,DUPLICATION,tc_sa_55_alphanum_1_char,<ALPHANUMERIC> duplicated: 1-char NAME,tc_sa_55.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""A.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 35: 1 iteration
+56,37,T,DELETION,tc_sa_56_alphanum_7_chars,Alphanum terminal: 7 chars (n-1 boundary),tc_sa_56.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd123.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 37: 7 iters (BVNV)
+57,37,T,VALID,tc_sa_57_alphanum_8_chars,Alphanum terminal: 8 chars (valid boundary),tc_sa_57.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }","Returns SHA-256 hash: 7f4c86e7064082e73d76510e6bd792aa9fcd81c4b5085d6f7037b669e1793259
+ (use @freeze_time in test)",Node 37: 8 iters (BVV)
+58,37,T,DUPLICATION,tc_sa_58_alphanum_9_chars,Alphanum terminal: 9 chars (n+1 boundary),tc_sa_58.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd12345.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 37: 9 iters (BVNV)
+59,37,T,MODIFICATION,tc_sa_59_alphanum_symbol,Alphanum terminal: symbol (%) in NAME,tc_sa_59.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd123%.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 37: symbol char
+60,37,T,MODIFICATION,tc_sa_60_alphanum_space,Alphanum terminal: space in NAME,tc_sa_60.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd 234.pdf""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 37: space in NAME
+61,38,T,VALID,tc_sa_61_ext_pdf,Extension terminal: .pdf (valid),tc_sa_61.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.pdf""
+ }","Returns SHA-256 hash: 7f4c86e7064082e73d76510e6bd792aa9fcd81c4b5085d6f7037b669e1793259
+ (use @freeze_time in test)",Node 38: .pdf
+62,39,T,VALID,tc_sa_62_ext_docx,Extension terminal: .docx (valid),tc_sa_62.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.docx""
+ }","Returns SHA-256 hash: 7f4c86e7064082e73d76510e6bd792aa9fcd81c4b5085d6f7037b669e1793259
+ (use @freeze_time in test)",Node 39: .docx
+63,40,T,VALID,tc_sa_63_ext_xlsx,Extension terminal: .xlsx (valid),tc_sa_63.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.xlsx""
+ }","Returns SHA-256 hash: 7f4c86e7064082e73d76510e6bd792aa9fcd81c4b5085d6f7037b669e1793259
+ (use @freeze_time in test)",Node 40: .xlsx
+64,38,T,MODIFICATION,tc_sa_64_ext_uppercase,"Extension terminal: .PDF (uppercase, not allowed)",tc_sa_64.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.PDF""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 38 modified: case
+65,36,NT,MODIFICATION,tc_sa_65_ext_csv,<EXTENSION_TOKEN> modified: .csv (not allowed),tc_sa_65.json,"{
+  ""PROJECT_ID"": ""0123456789abcdef0123456789abcdef"",
+  ""FILENAME"": ""ABcd1234.csv""
+ }",EnterpriseManagementException: JSON data has no valid values,Node 36 modified to .csv

@@ -27,5 +27,20 @@ class MyManagerTests(unittest.TestCase):
         result = self.manager.register_document(path)
         self.assertEqual(result, expected_hash)
 
+    @freeze_time("2026-04-16")
+    def test_tc_sa_02_json_empty(self):
+        """
+        ID_TEST: tc_sa_02_json_empty
+        Description: Entire JSON content deleted (empty file)
+        """
+        path = "tc_sa_02.json"
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("")
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            self.manager.register_document(path)
+
+        self.assertEqual(str(context.exception), "file not JSON formatted")
+
 if __name__ == '__main__':
     unittest.main()

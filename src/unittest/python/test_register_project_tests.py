@@ -155,13 +155,26 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(expected_msg, str(context.exception))
 
-    def test_(self):
+    def test_tc_sa_13_field1_deleted(self):
         """tc_sa_13: Missing PROJECT_ID should trigger 'JSON does not have expected structure'"""
         manager = EnterpriseManager()
         base_path = os.path.dirname(__file__)
         test_file = os.path.join(base_path, "json_files", "tc_sa_13.json")
 
         expected_msg = "JSON does not have expected structure"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
+    def test_tc_sa_14_field1_duplicated(self):
+        """tc_sa_14: Duplicated PROJECT_ID should trigger 'JSON data has no valid values'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_14.json")
+
+        expected_msg = "JSON data has no valid values"
 
         with self.assertRaises(EnterpriseManagementException) as context:
             manager.register_document(test_file)

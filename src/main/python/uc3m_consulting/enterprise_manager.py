@@ -6,27 +6,33 @@ from .enterprise_management_exception import EnterpriseManagementException
 
 class EnterpriseManager:
     def register_document(self, file_path):
+        if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
+            raise EnterpriseManagementException("JSON data has no valid values")
+
         try:
             def dict_check(pairs):
-                d = {}
+                res = {}
                 for k, v in pairs:
-                    if k in d: raise ValueError("Duplicate")
-                    d[k] = v
-                return d
+                    if k in res: raise ValueError("Duplicate")
+                    res[k] = v
+                return res
 
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f, object_pairs_hook=dict_check)
 
-        except (json.JSONDecodeError, ValueError):
-            if os.path.getsize(file_path) == 0:
-                raise EnterpriseManagementException("JSON data has no valid values")
+                if f.read().strip():
+                    raise json.JSONDecodeError("Extra data", "", 0)
 
-            if "tc_sa_12" in file_path:
-                raise EnterpriseManagementException("JSON data has no valid values")
-
+        except json.JSONDecodeError:
             raise EnterpriseManagementException("The file is not JSON formatted")
 
-        if "PROJECT_ID" not in data or "FILENAME" not in data:
+        except ValueError:
+            raise EnterpriseManagementException("JSON data has no valid values")
+
+        except Exception:
+            raise EnterpriseManagementException("The file is not JSON formatted")
+
+        if not isinstance(data, dict) or "PROJECT_ID" not in data or "FILENAME" not in data:
             raise EnterpriseManagementException("JSON does not have expected structure")
 
         project = EnterpriseProject(

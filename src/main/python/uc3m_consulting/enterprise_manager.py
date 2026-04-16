@@ -17,7 +17,7 @@ class EnterpriseManager:
         """
         except json.JSONDecodeError:
             raise EnterpriseManagementException("file not JSON formatted")
-        """
+"""
 
         project_id = data.get("PROJECT_ID")
         file_name = data.get("FILENAME")

@@ -3,7 +3,6 @@ import os
 from .enterprise_project import EnterpriseProject
 from .enterprise_management_exception import EnterpriseManagementException
 
-
 class EnterpriseManager:
     def register_document(self, file_path):
         try:
@@ -12,8 +11,10 @@ class EnterpriseManager:
         except json.JSONDecodeError:
             if os.path.getsize(file_path) == 0:
                 raise EnterpriseManagementException("JSON data has no valid values")
-
             raise EnterpriseManagementException("The file is not JSON formatted")
+
+        if "PROJECT_ID" not in data or "FILENAME" not in data:
+            raise EnterpriseManagementException("JSON does not have expected structure")
 
         project = EnterpriseProject(
             company_cif=data["PROJECT_ID"],

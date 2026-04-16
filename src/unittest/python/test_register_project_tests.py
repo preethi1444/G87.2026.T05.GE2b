@@ -392,5 +392,28 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
+    class MyStructuralTests(unittest.TestCase):
+
+        def setUp(self):
+            self.manager = EnterpriseManager()
+            self.base_path = os.path.dirname(__file__)
+            self.json_folder = os.path.join(self.base_path, "json_files")
+            if not os.path.exists(self.json_folder):
+                os.makedirs(self.json_folder)
+
+        def create_test_file(self, filename, content):
+            path = os.path.join(self.json_folder, filename)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
+            return path
+
+        # TC-ST-01: Path 1→2(yes)→3→11
+        def test_tc_st_01_file_not_found(self):
+            invalid_path = "/invalid/path/to/document.json"
+
+            with self.assertRaises(EnterpriseManagementException) as context:
+                self.manager.register_document(invalid_path)
+            self.assertEqual("Input file not found", str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

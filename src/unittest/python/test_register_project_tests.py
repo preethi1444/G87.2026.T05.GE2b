@@ -142,5 +142,18 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(expected_msg, str(context.exception))
 
+    def test_tc_sa_12_data_duplicated(self):
+        """tc_sa_12: Duplicated fields should trigger 'JSON data has no valid values'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_12.json")
+
+        expected_msg = "JSON data has no valid values"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,12 +1,19 @@
-"""Module """
+import json
+from .enterprise_project import EnterpriseProject
+from .enterprise_management_exception import EnterpriseManagementException
 
 class EnterpriseManager:
-    """Class for providing the methods for managing the orders"""
-    def __init__(self):
-        pass
+    def register_document(self, file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            data = json.loads(f.read())
 
-    @staticmethod
-    def validate_cif(cif: str):
-        """RETURNs TRUE IF THE IBAN RECEIVED IS VALID SPANISH IBAN,
-        OR FALSE IN OTHER CASE"""
-        return True
+        project = EnterpriseProject(
+            company_cif=data["PROJECT_ID"],
+            project_acronym=data["FILENAME"],
+            project_description="Baseline",
+            department="IT",
+            starting_date="2026-04-16",
+            project_budget=1000
+        )
+
+        return project.project_id

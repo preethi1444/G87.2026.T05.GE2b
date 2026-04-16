@@ -3,8 +3,13 @@ import os
 from .enterprise_project import EnterpriseProject
 from .enterprise_management_exception import EnterpriseManagementException
 
+
 class EnterpriseManager:
     def register_document(self, file_path):
+        """
+        Registers a document by parsing a JSON file and validating its structure and values.
+        Returns the project_id upon successful validation.
+        """
         if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
             raise EnterpriseManagementException("JSON data has no valid values")
 
@@ -13,8 +18,8 @@ class EnterpriseManager:
                 res = {}
                 for k, v in pairs:
                     if k in res:
-                        # This triggers the "no valid values" message via ValueError
-                        raise ValueError("Duplicate")
+                        # Node 7 & 9 Duplicated: Triggers "no valid values" message
+                        raise ValueError("Duplicate Key")
                     res[k] = v
                 return res
 
@@ -28,6 +33,7 @@ class EnterpriseManager:
             raise EnterpriseManagementException("The file is not JSON formatted")
 
         except ValueError:
+            # Nodes 7 & 9 Duplicated
             raise EnterpriseManagementException("JSON data has no valid values")
 
         except Exception:
@@ -37,8 +43,12 @@ class EnterpriseManager:
             raise EnterpriseManagementException("JSON does not have expected structure")
 
         project_id = data.get("PROJECT_ID")
+        filename = data.get("FILENAME")
 
         if not isinstance(project_id, str) or len(project_id) != 32:
+            raise EnterpriseManagementException("JSON data has no valid values")
+
+        if not isinstance(filename, str) or len(filename.strip()) == 0:
             raise EnterpriseManagementException("JSON data has no valid values")
 
         project = EnterpriseProject(
@@ -49,4 +59,5 @@ class EnterpriseManager:
             starting_date="2026-04-16",
             project_budget=1000
         )
+
         return project.project_id

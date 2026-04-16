@@ -234,5 +234,83 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(expected_msg, str(context.exception))
 
+    def test_tc_sa_19_field2_duplicated(self):
+        """tc_sa_19: Duplicated FILENAME field should trigger 'JSON data has no valid values'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_19.json")
+
+        expected_msg = "JSON data has no valid values"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
+    def test_tc_sa_20_label_pid_deleted(self):
+        """tc_sa_20: Missing key label for PROJECT_ID should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_20.json")
+
+        expected_msg = "The file is not JSON formatted"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
+    def test_tc_sa_21_label_pid_duplicated(self):
+        """tc_sa_21: Duplicated key label (syntax error) should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_21.json")
+
+        expected_msg = "The file is not JSON formatted"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
+    def test_tc_sa_22_label_pid_modified(self):
+        """tc_sa_22: Modified key name (PROJ_ID) should trigger 'JSON does not have expected structure'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_22.json")
+
+        expected_msg = "JSON does not have expected structure"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
+    def test_tc_sa_23_colon_pid_deleted(self):
+        """tc_sa_23: Missing colon after PROJECT_ID should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_23.json")
+
+        expected_msg = "The file is not JSON formatted"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
+    def test_tc_sa_24_colon_pid_duplicated(self):
+        """tc_sa_24: Duplicated colon after PROJECT_ID should trigger 'The file is not JSON formatted'"""
+        manager = EnterpriseManager()
+        base_path = os.path.dirname(__file__)
+        test_file = os.path.join(base_path, "json_files", "tc_sa_24.json")
+
+        expected_msg = "The file is not JSON formatted"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+
+        self.assertEqual(expected_msg, str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

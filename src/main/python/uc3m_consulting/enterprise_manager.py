@@ -11,7 +11,10 @@ class EnterpriseManager:
         Registers a document by parsing a JSON file and validating its structure and values.
         Returns the project_id upon successful validation.
         """
-        if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
+        if not os.path.exists(file_path):
+            raise EnterpriseManagementException("Input file not found")
+
+        if os.path.getsize(file_path) == 0:
             raise EnterpriseManagementException("JSON data has no valid values")
 
         try:

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from .enterprise_project import EnterpriseProject
 from .enterprise_management_exception import EnterpriseManagementException
 
@@ -48,7 +49,7 @@ class EnterpriseManager:
         if not isinstance(project_id, str) or len(project_id) != 32:
             raise EnterpriseManagementException("JSON data has no valid values")
 
-        if not isinstance(filename, str) or len(filename.strip()) == 0:
+        if not isinstance(filename, str) or not re.fullmatch(r"[a-zA-Z0-9]{8}\.(pdf|docx|xlsx)", filename):
             raise EnterpriseManagementException("JSON data has no valid values")
 
         project = EnterpriseProject(

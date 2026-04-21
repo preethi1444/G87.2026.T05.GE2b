@@ -408,7 +408,13 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("The file is not JSON formatted", str(context.exception))
     
-    
+    def test_tc_sa_37_string_token_modified(self):
+        """tc_sa_37: <STRING_TOKEN> modified: label is wrong string"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_37.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("JSON does not have expected structure", str(context.exception))
     
     
     

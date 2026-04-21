@@ -440,6 +440,18 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
+    @freeze_time("2026-01-01")
+    def test_tc_sa_41_hex_32_chars(self):
+        """tc_sa_41: Hex terminal: 32 chars (valid boundary)"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_41.json")
+        result = manager.register_document(test_file)
+        self.assertEqual(
+            "2f39a4000fbd5abfc156eaa6022106e2782a9274b07f2ba7e9eaa789ce16dfbd",
+            result
+        )
+   
+
 
 class MyStructuralTests(unittest.TestCase):
     def setUp(self):

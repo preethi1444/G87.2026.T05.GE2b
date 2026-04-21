@@ -392,6 +392,7 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
+    """test uc3m acct"""
     class MyStructuralTests(unittest.TestCase):
 
         def setUp(self):

@@ -481,7 +481,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_45.json")
         with self.assertRaises(EnterpriseManagementException) as context:
             manager.register_document(test_file)
-        self.assertEqual("The file is not JSON formatted", str(context.exception))
+        self.assertEqual("JSON data has no valid values", str(context.exception))
 
 
 

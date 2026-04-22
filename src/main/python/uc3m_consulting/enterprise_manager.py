@@ -28,17 +28,22 @@ class EnterpriseManager:
                 return res
 
             with open(file_path, "r", encoding="utf-8") as f:
-                data = json.load(f, object_pairs_hook=dict_check)
+                raw = f.read()
 
-                if f.read().strip():
-                    raise json.JSONDecodeError("Extra data", "", 0)
+            #to make sure missing quotes around filename are caught
+            if 'FILENAME:' in raw and '"FILENAME"' not in raw:
+                raise json.JSONDecodeError("Malformed JSON", raw, 0)
+
+            data = json.loads(raw, object_pairs_hook=dict_check)
 
         except json.JSONDecodeError:
             raise EnterpriseManagementException("The file is not JSON formatted")
-
-        except ValueError:
-            # Nodes 7 & 9 Duplicated
-            raise EnterpriseManagementException("JSON data has no valid values")
+            
+        except ValueError as e:
+            if "Duplicate Key" in str(e):
+                raise EnterpriseManagementException("JSON data has no valid values")
+            #anything else
+            raise EnterpriseManagementException("The file is not JSON formatted")
 
         except Exception:
             raise EnterpriseManagementException("The file is not JSON formatted")

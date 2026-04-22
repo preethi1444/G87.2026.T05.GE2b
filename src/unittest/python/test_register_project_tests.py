@@ -499,6 +499,22 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
+    def test_tc_sa_48_fn_value_duplicated(self):
+        """tc_sa_48: <FILENAME_VALUE> duplicated: name+ext repeated"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_48.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("JSON data has no valid values", str(context.exception))
+
+
+
+
+
+
+
+
+
 
 
 class MyStructuralTests(unittest.TestCase):

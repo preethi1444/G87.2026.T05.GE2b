@@ -548,7 +548,13 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
-
+    def test_tc_sa_54_alphanum_0_chars(self):
+        """tc_sa_54: <ALPHANUMERIC> deleted: empty NAME (0 chars)"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_54.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("JSON data has no valid values", str(context.exception))
 
 
 

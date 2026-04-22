@@ -603,6 +603,18 @@ class MyTestCase(unittest.TestCase):
 
 
 
+    def test_tc_sa_64_ext_uppercase(self):
+        """tc_sa_64: Extension terminal: .PDF (uppercase, not allowed)"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_64.json")
+        with self.assertRaises(EnterpriseManagementException) as context:
+            manager.register_document(test_file)
+        self.assertEqual("JSON data has no valid values", str(context.exception))
+
+
+
+
+
 
 
 class MyStructuralTests(unittest.TestCase):

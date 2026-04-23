@@ -25,8 +25,14 @@ class EnterpriseManager:
                     res[k] = v
                 return res
 
-            with open(file_path, "r", encoding="utf-8") as f:
-                raw = f.read()
+            #Spoke to professor and implemented try catch block
+
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    raw = f.read()
+            except Exception:
+                raise EnterpriseManagementException("The file is not JSON formatted")
+
 
             data = json.loads(raw, object_pairs_hook=dict_check)
 
@@ -59,6 +65,7 @@ class EnterpriseManager:
 
         hash_input = f"{project_id}{filename}{today}"
 
+        #dont need to do this because already done from proj doc --> auto amke hash. calling a subtree that is linear. 
         if len(project_id) == 32:
             return hashlib.sha256(hash_input.encode("utf-8")).hexdigest()
         else:

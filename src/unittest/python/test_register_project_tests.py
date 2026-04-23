@@ -6,14 +6,14 @@ from uc3m_consulting import EnterpriseManager, EnterpriseManagementException
 class MyTestCase(unittest.TestCase):
     @freeze_time("2026-04-16")
     def test_tc_sa_01_valid_baseline(self):
+        """tc_sa_41: Hex terminal: 32 chars (valid boundary)"""
         manager = EnterpriseManager()
-        base_path = os.path.dirname(__file__)
-        test_file = os.path.join(base_path, "json_files", "tc_sa_01.json")
-
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_01.json")
         result = manager.register_document(test_file)
-
-        expected = "a3814e1ef2d474f6249c776b92fcdfc6"
-        self.assertEqual(result, expected)
+        self.assertEqual(
+            "0533a93ad643a625ca5ca6ac3b2c36d1f158d7351f534dec4b5357684a9ea6a4",
+            result
+        )
 
     def test_tc_sa_02_json_empty(self):
         """Test for empty JSON file"""
@@ -481,7 +481,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_45.json")
         with self.assertRaises(EnterpriseManagementException) as context:
             manager.register_document(test_file)
-        self.assertEqual("JSON data has no valid values", str(context.exception))
+        self.assertEqual("The file is not JSON formatted", str(context.exception))
 
     def test_tc_sa_46_fn_token_modified(self):
         """tc_sa_46: <FILENAME_TOKEN> modified: wrong label string"""

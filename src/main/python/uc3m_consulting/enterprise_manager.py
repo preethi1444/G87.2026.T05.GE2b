@@ -5,6 +5,7 @@ import hashlib
 import datetime
 from .enterprise_project import EnterpriseProject
 from .enterprise_management_exception import EnterpriseManagementException
+from .project_document import ProjectDocument
 
 
 class EnterpriseManager:
@@ -61,15 +62,19 @@ class EnterpriseManager:
         if not isinstance(filename, str) or not (re.fullmatch(r"[a-zA-Z0-9]{8}\.(pdf|docx|xlsx)", filename)):
             raise EnterpriseManagementException("JSON data has no valid values")
 
-        today = datetime.datetime.now().strftime("%Y%m%d")
 
-        hash_input = f"{project_id}{filename}{today}"
+        doc = ProjectDocument(project_id, filename)
+        return doc.document_signature
+
+        # today = datetime.datetime.now().strftime("%Y%m%d")
+
+        # hash_input = f"{project_id}{filename}{today}"
 
         #dont need to do this because already done from proj doc --> auto amke hash. calling a subtree that is linear. 
-        if len(project_id) == 32:
-            return hashlib.sha256(hash_input.encode("utf-8")).hexdigest()
-        else:
-            return hashlib.md5(hash_input.encode("utf-8")).hexdigest()
+        # if len(project_id) == 32:
+        #     return hashlib.sha256(hash_input.encode("utf-8")).hexdigest()
+        # else:
+        #     return hashlib.md5(hash_input.encode("utf-8")).hexdigest()
 
 
         # project = EnterpriseProject(

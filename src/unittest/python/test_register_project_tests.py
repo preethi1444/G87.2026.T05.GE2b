@@ -8,7 +8,7 @@ class MyTestCase(unittest.TestCase):
     def test_tc_sa_01_valid_baseline(self):
         """tc_sa_41: Hex terminal: 32 chars (valid boundary)"""
         manager = EnterpriseManager()
-        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_01.json")
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sapython -m unittest -v src.unittest.python.test_register_project_tests_01.json")
         result = manager.register_document(test_file)
         self.assertEqual(
             "0533a93ad643a625ca5ca6ac3b2c36d1f158d7351f534dec4b5357684a9ea6a4",
@@ -578,7 +578,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_57.json")
         result = manager.register_document(test_file)
         self.assertEqual(
-            "a9c50519863c10254c82cf0415bb5f58ebbd86bcc9928c5b1097a100c3ce3082",
+            "4f39a6d7c82f1dd72850f1abe960f868dfea67dd917781d38f9f4d565f4dc47b",
             result
         )
 

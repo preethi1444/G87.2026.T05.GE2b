@@ -6,12 +6,12 @@ from uc3m_consulting import EnterpriseManager, EnterpriseManagementException
 class MyTestCase(unittest.TestCase):
     @freeze_time("2026-04-16")
     def test_tc_sa_01_valid_baseline(self):
-        """tc_sa_41: Hex terminal: 32 chars (valid boundary)"""
+        """tc_sa_01: Valid JSON – baseline (.pdf)"""
         manager = EnterpriseManager()
-        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sapython -m unittest -v src.unittest.python.test_register_project_tests_01.json")
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_01.json")
         result = manager.register_document(test_file)
         self.assertEqual(
-            "0533a93ad643a625ca5ca6ac3b2c36d1f158d7351f534dec4b5357684a9ea6a4",
+            "c29b7d03db0e597a9a178318e0121697c8a2523c874190c1d5cfb352e0dcbd55",
             result
         )
 
@@ -447,7 +447,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_41.json")
         result = manager.register_document(test_file)
         self.assertEqual(
-            "0533a93ad643a625ca5ca6ac3b2c36d1f158d7351f534dec4b5357684a9ea6a4",
+            "c29b7d03db0e597a9a178318e0121697c8a2523c874190c1d5cfb352e0dcbd55",
             result
         )
    
@@ -613,7 +613,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_61.json")
         result = manager.register_document(test_file)
         self.assertEqual(
-            "0533a93ad643a625ca5ca6ac3b2c36d1f158d7351f534dec4b5357684a9ea6a4",
+            "c29b7d03db0e597a9a178318e0121697c8a2523c874190c1d5cfb352e0dcbd55",
             result
         )
 
@@ -624,7 +624,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_62.json")
         result = manager.register_document(test_file)
         self.assertEqual(
-            "e324578bb6c0ac4a97b6eee2d79bdcaf16ec8ae372f8078fed7afb993994a1d7",
+            "a164c3ee96851be75072cc0a2ed8e0b94059e55b8378e33a9115d530db3d2bdf",
             result
         )
 
@@ -635,7 +635,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_63.json")
         result = manager.register_document(test_file)
         self.assertEqual(
-            "253408a2f50672b8b88e9cc64bb448733cc6e6c2ad538d5b34f8b8721827be2e",
+            "352bf7fec722f6077a56e54d7e9118a463e6814b6c74b2235e665a299319ec21",
             result
         )
 

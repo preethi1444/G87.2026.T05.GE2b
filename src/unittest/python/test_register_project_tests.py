@@ -617,6 +617,17 @@ class MyTestCase(unittest.TestCase):
             result
         )
 
+    @freeze_time("2026-01-01")
+    def test_tc_sa_62_ext_docx(self):
+        """tc_sa_62: Extension terminal: .docx (valid)"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_62.json")
+        result = manager.register_document(test_file)
+        self.assertEqual(
+            "e324578bb6c0ac4a97b6eee2d79bdcaf16ec8ae372f8078fed7afb993994a1d7",
+            result
+        )
+
     def test_tc_sa_64_ext_uppercase(self):
         """tc_sa_64: Extension terminal: .PDF (uppercase, not allowed)"""
         manager = EnterpriseManager()

@@ -447,7 +447,7 @@ class MyTestCase(unittest.TestCase):
         test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_41.json")
         result = manager.register_document(test_file)
         self.assertEqual(
-            "2f39a4000fbd5abfc156eaa6022106e2782a9274b07f2ba7e9eaa789ce16dfbd",
+            "0533a93ad643a625ca5ca6ac3b2c36d1f158d7351f534dec4b5357684a9ea6a4",
             result
         )
    

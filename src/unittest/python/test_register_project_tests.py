@@ -523,7 +523,6 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
-
     def test_tc_sa_51_ext_deleted(self):
         """tc_sa_51: <EXTENSION> deleted: no extension in filename"""
         manager = EnterpriseManager()
@@ -571,6 +570,17 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(EnterpriseManagementException) as context:
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
+
+    @freeze_time("2026-01-01")
+    def test_tc_sa_57_alphanum_8_chars(self):
+        """tc_sa_57: Alphanum terminal: 8 chars (valid boundary)"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_57.json")
+        result = manager.register_document(test_file)
+        self.assertEqual(
+            "a9c50519863c10254c82cf0415bb5f58ebbd86bcc9928c5b1097a100c3ce3082",
+            result
+        )
 
     def test_tc_sa_58_alphanum_9_chars(self):
         """tc_sa_58: Alphanum terminal: 9 chars (n+1 boundary)"""

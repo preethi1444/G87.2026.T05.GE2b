@@ -440,7 +440,7 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
-    @freeze_time("2026-01-01")
+    @freeze_time("2026-04-16")
     def test_tc_sa_41_hex_32_chars(self):
         """tc_sa_41: Hex terminal: 32 chars (valid boundary)"""
         manager = EnterpriseManager()
@@ -572,9 +572,6 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
-
-
-
     def test_tc_sa_58_alphanum_9_chars(self):
         """tc_sa_58: Alphanum terminal: 9 chars (n+1 boundary)"""
         manager = EnterpriseManager()
@@ -599,9 +596,16 @@ class MyTestCase(unittest.TestCase):
             manager.register_document(test_file)
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
-
-
-
+    @freeze_time("2026-04-16")
+    def test_tc_sa_61_ext_pdf(self):
+        """tc_sa_61: Extension terminal: .pdf (valid)"""
+        manager = EnterpriseManager()
+        test_file = os.path.join(os.path.dirname(__file__), "json_files", "tc_sa_61.json")
+        result = manager.register_document(test_file)
+        self.assertEqual(
+            "0533a93ad643a625ca5ca6ac3b2c36d1f158d7351f534dec4b5357684a9ea6a4",
+            result
+        )
 
     def test_tc_sa_64_ext_uppercase(self):
         """tc_sa_64: Extension terminal: .PDF (uppercase, not allowed)"""

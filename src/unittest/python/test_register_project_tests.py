@@ -764,6 +764,24 @@ class MyStructuralTests(unittest.TestCase):
         self.assertEqual(len(result), 64)
 
 
+    def test_tc_st_08(self):
+        valid_json = '{"PROJECT_ID": "0123456789abcdef0123456789abcdef", "FILENAME": "ABcd1234.pdf"}'
+        path = os.path.join(self.json_folder, "st_08_valid_storage.json")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(valid_json)
+
+        storage_path = "document_store.json"
+        
+        with open(storage_path, "w", encoding="utf-8") as f:
+            f.write("") 
+
+        result = self.manager.register_document(path)
+
+        self.assertIsInstance(result, str)
+        self.assertEqual(len(result), 64)
+
+
 
 
 

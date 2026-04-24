@@ -673,10 +673,10 @@ class MyStructuralTests(unittest.TestCase):
             f.write(content)
         return path
 
-    # TC-ST-01: Path 1→2(yes)→3→11
-    def test_tc_st_01_file_not_found(self):
-        invalid_path = "/invalid/path/to/document.json"
-
+    def test_tc_st_01(self):
+        invalid_path = os.path.join(self.json_folder, "non_existent_file.json")
+        if os.path.exists(invalid_path):
+            os.remove(invalid_path)
         with self.assertRaises(EnterpriseManagementException) as context:
             self.manager.register_document(invalid_path)
         self.assertEqual("Input file not found", str(context.exception))

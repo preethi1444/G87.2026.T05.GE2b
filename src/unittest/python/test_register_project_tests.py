@@ -681,5 +681,16 @@ class MyStructuralTests(unittest.TestCase):
             self.manager.register_document(invalid_path)
         self.assertEqual("Input file not found", str(context.exception))
 
+    def test_tc_st_02(self):
+        malformed_json = '{"PROJECT_ID": "0123456789abcdef0123456789abcdef", "FILENAME": "test.pdf"'
+        path = os.path.join(self.json_folder, "st_02_malformed.json")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(malformed_json)
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            self.manager.register_document(path)
+        self.assertEqual("The file is not JSON formatted", str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

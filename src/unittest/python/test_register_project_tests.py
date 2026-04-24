@@ -735,7 +735,7 @@ class MyStructuralTests(unittest.TestCase):
         with open(path, "w", encoding="utf-8") as f:
             f.write(valid_json)
         
-        self.manager.storage_path = "////invalid////path////"
+        self.manager.storage_path = "//invalid//path//"
 
         with self.assertRaises(EnterpriseManagementException) as context:
             self.manager.register_document(path)
@@ -744,6 +744,35 @@ class MyStructuralTests(unittest.TestCase):
         "Internal processing error when getting the file_signature.",
         str(context.exception)
         )
+        
+
+    def test_tc_st_07(self):
+        valid_json = '{"PROJECT_ID": "0123456789abcdef0123456789abcdef", "FILENAME": "ABcd1234.pdf"}'
+        path = os.path.join(self.json_folder, "st_07_file_not_found.json")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(valid_json)
+
+        storage_path = "document_store.json"
+    
+        if os.path.exists(storage_path):
+            os.remove(storage_path)
+
+        result = self.manager.register_document(path)
+
+        self.assertIsInstance(result, str)
+        self.assertEqual(len(result), 64)
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':

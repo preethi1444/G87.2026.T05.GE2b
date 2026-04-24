@@ -2,6 +2,7 @@ import unittest
 import os
 from freezegun import freeze_time
 from uc3m_consulting import EnterpriseManager, EnterpriseManagementException
+from unittest.mock import patch, mock_open
 
 class MyTestCase(unittest.TestCase):
     @freeze_time("2026-04-16")
@@ -715,5 +716,16 @@ class MyStructuralTests(unittest.TestCase):
 
         self.assertEqual("JSON data has no valid values", str(context.exception))
 
+    def test_tc_st_05(self):
+        invalid_file_json = '{"PROJECT_ID": "0123456789abcdef0123456789abcdef", "FILENAME": ""}'
+        path = os.path.join(self.json_folder, "st_05_invalid_ext.json")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(invalid_file_json)
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            self.manager.register_document(path)
+
+        self.assertEqual("JSON data has no valid values", str(context.exception))
 if __name__ == '__main__':
     unittest.main()

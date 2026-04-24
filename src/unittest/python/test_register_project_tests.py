@@ -792,7 +792,7 @@ class MyStructuralTests(unittest.TestCase):
         self.manager.storage_path = "/root/document_store.json"
 
         with self.assertRaises(EnterpriseManagementException) as context:
-            self.manager.register_document(path)g
+            self.manager.register_document(path)
 
         self.assertEqual(
             "Internal processing error when getting the file_signature.",

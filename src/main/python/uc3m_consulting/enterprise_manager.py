@@ -1,15 +1,16 @@
+"""Enterprise manager module"""
 import json
 import os
 import re
-import hashlib
-import datetime
-from .enterprise_project import EnterpriseProject
 from .enterprise_management_exception import EnterpriseManagementException
 from .project_document import ProjectDocument
 
 
 class EnterpriseManager:
+    """enterprise manager class"""
+
     def register_document(self, file_path):
+        """register doc and return signature"""
         if not os.path.exists(file_path):
             raise EnterpriseManagementException("Input file not found")
 
@@ -39,7 +40,6 @@ class EnterpriseManager:
 
         except json.JSONDecodeError:
             raise EnterpriseManagementException("The file is not JSON formatted")
-            
         except ValueError as e:
             if "Duplicate Key" in str(e):
                 raise EnterpriseManagementException("JSON data has no valid values")
@@ -59,7 +59,7 @@ class EnterpriseManager:
         if not isinstance(project_id, str) or not re.fullmatch(r"[0-9a-fA-F]{32}", project_id):
             raise EnterpriseManagementException("JSON data has no valid values")
 
-        if not isinstance(filename, str) or not (re.fullmatch(r"[a-zA-Z0-9]{8}\.(pdf|docx|xlsx)", filename)):
+        if not isinstance(filename, str) or not re.fullmatch(r"[a-zA-Z0-9]{8}\.(pdf|docx|xlsx)", filename):
             raise EnterpriseManagementException("JSON data has no valid values")
 
 
@@ -72,27 +72,5 @@ class EnterpriseManager:
                 store.write(doc.document_signature + "\n")
         except Exception:
             raise EnterpriseManagementException("Internal processing error when getting the file_signature.")
-        
+
         return doc.document_signature
-
-        # today = datetime.datetime.now().strftime("%Y%m%d")
-
-        # hash_input = f"{project_id}{filename}{today}"
-
-        #dont need to do this because already done from proj doc --> auto amke hash. calling a subtree that is linear. 
-        # if len(project_id) == 32:
-        #     return hashlib.sha256(hash_input.encode("utf-8")).hexdigest()
-        # else:
-        #     return hashlib.md5(hash_input.encode("utf-8")).hexdigest()
-
-
-        # project = EnterpriseProject(
-        #     company_cif=data["PROJECT_ID"],
-        #     project_acronym=data["FILENAME"],
-        #     project_description="Baseline",
-        #     department="IT",
-        #     starting_date="2026-04-16",
-        #     project_budget=1000
-        # )
-
-        # return project.project_id

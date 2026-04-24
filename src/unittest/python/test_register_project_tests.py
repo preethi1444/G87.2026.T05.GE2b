@@ -692,5 +692,28 @@ class MyStructuralTests(unittest.TestCase):
             self.manager.register_document(path)
         self.assertEqual("The file is not JSON formatted", str(context.exception))
 
+    def test_tc_st_03(self):
+        missing_keys_json = '{"FILENAME": "report.pdf"}'
+        path = os.path.join(self.json_folder, "st_03_missing_keys.json")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(missing_keys_json)
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            self.manager.register_document(path)
+        self.assertEqual("JSON does not have expected structure", str(context.exception))
+
+    def test_tc_st_04(self):
+        invalid_md5_json = '{"PROJECT_ID": "1234", "FILENAME": "report.pdf"}'
+        path = os.path.join(self.json_folder, "st_04_invalid_md5.json")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(invalid_md5_json)
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            self.manager.register_document(path)
+
+        self.assertEqual("JSON data has no valid values", str(context.exception))
+
 if __name__ == '__main__':
     unittest.main()

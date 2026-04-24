@@ -727,5 +727,24 @@ class MyStructuralTests(unittest.TestCase):
             self.manager.register_document(path)
 
         self.assertEqual("JSON data has no valid values", str(context.exception))
+
+    def test_tc_st_06(self):
+        valid_json = '{"PROJECT_ID": "0123456789abcdef0123456789abcdef", "FILENAME": "ABcd1234.pdf"}'
+        path = os.path.join(self.json_folder, "st_06_valid.json")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(valid_json)
+        
+        self.manager.storage_path = "////invalid////path////"
+
+        with self.assertRaises(EnterpriseManagementException) as context:
+            self.manager.register_document(path)
+
+        self.assertEqual(
+        "Internal processing error when getting the file_signature.",
+        str(context.exception)
+        )
+
+
 if __name__ == '__main__':
     unittest.main()

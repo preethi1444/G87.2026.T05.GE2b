@@ -64,6 +64,15 @@ class EnterpriseManager:
 
 
         doc = ProjectDocument(project_id, filename)
+        #code for structural tests
+        storage_path = getattr(self, "storage_path", "document_store.json")
+
+        try:
+            with open(storage_path, "a", encoding="utf-8") as store:
+                store.write(doc.document_signature + "\n")
+        except Exception:
+            raise EnterpriseManagementException("Internal processing error when getting the file_signature.")
+        
         return doc.document_signature
 
         # today = datetime.datetime.now().strftime("%Y%m%d")
